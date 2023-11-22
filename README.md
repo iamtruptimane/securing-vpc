@@ -304,7 +304,83 @@ ssh -A ec2-user@BastionHostPublicIP
 ```
 In this  Step you launched a basic instance that mimics a database server on a private subnet. It has a private IP address, which in and of itself makes it more secure. You learned how you can still SSH to the private instance by going through a bastion host. Further, rather than copying private SSH keys to the bastion host (a security risk), you updated your own authentication chain.
 
-## Step 10
+## Step 10 : Launching a Network Address Translation (NAT) Gateway
+In this  step, you will create a NAT Gateway that will be used by the EC2 instance in your private subnet to access the public internet. You will also revisit the route table associated with the private subnet and update the target entry to point to this gateway.
+
+1. In the AWS Management Console search bar, enter VPC, and click the VPC result under Services.
+
+2. Click NAT Gateways in the left navigation pane.
+3.  Click Create NAT gateway.
+4. Begin configuring the following in the NAT gateway settings form:
+* Name: Enter NAT-GW
+* Subnet: Select Public-A
+* Connectivity type: Ensure Public is selected
+
+The Public connectivity type will allow this NAT Gateway the ability to access the public internet.
+
+5. Click Allocate Elastic IP next to the Elastic IP allocation ID.
+
+You will need to attach an Elastic IP address to your NAT Gateway. This allows it to be referenced by the route table responsible for routing outbound traffic from instances in the private subnet to the public internet.
+
+6. Click Create NAT gateway.
+
+7. Wait for the NAT Gateway State to display as Available before continuing.
+
+## Add NAT to private route table:
+8.  On the left-hand navigation pane, click Route Tables.
+
+9. Select PrivateRouteTable then scroll down and click on the Routes tab to view the existing routes.
+
+You will recall temporarily setting the Destination to 0.0.0.0/0 with the Internet Gateway created previously as the Target.
+
+10. Click Edit routes.
+
+11. Locate the 0.0.0.0/0 Destination route and clear the Target field by clicking the X.
+
+12. Begin typing NAT, then select NAT Gateway, then NAT-GW from the drop-down menu that appears.
+
+13. Click Save changes.
+
+In this step, we created a NAT Gateway to allow your instances in private subnet access to the public internet.
+
+## Summary
+The VPC has been configured with two subnets, a public subnet, and a private subnet. If a subnet's traffic is routed to an Internet gateway, the subnet is known as a public subnet. If a subnet doesn't have a route to the Internet gateway, the subnet is known as a private subnet. Instances launched in a private subnet do not have publicly routable internet addresses either.
+
+Both subnets have a route table associated with them. Instances on the public subnet route internet traffic through the internet gateway. The private subnet routes internet traffic through the NAT device (gateway or instance).
+
+Each instance launched in either subnet has its own security group with inbound and outbound rules, to guarantee access is locked down to specific ports and protocols. For example, private instances on the private subnet allow any outbound traffic but only allow SSH access from the bastion host. As another example, although the NAT device is in the public subnet, it cannot be reached from the internet. It has an inbound rule that only grants instances from the private security group (private instances) access. Note that you might allow SSH access from your personal IP address or specific administrator's as well, or perhaps grant ICMP (ping) access during setup and troubleshooting efforts.
+
+In addition to security groups, the private subnet also has a network access control list (NACL) as an added measure of security. NACL's allow for inbound and outbound rules, specified in priority order. They are set up as implicit allow rules. If none of them are matched, all other traffic is denied. This private subnet NACL in this Lab allowed for SSH inbound traffic from the public subnet only. The outbound rules for the private NACL allowed for HTTP/S access to anywhere. This was proven to work in the Lab by performing operating system updates once the NAT device was in place. The private route table sends the traffic from the instances in the private subnet to the NAT device in the public subnet. The NAT device sends the traffic to the Internet gateway for the VPC. The traffic is attributed to the Elastic IP address of the NAT device. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
