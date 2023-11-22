@@ -61,6 +61,64 @@ As implied by the name, a public subnet will hold resources that require ingress
 * Subnet name: Enter Public-A
 * Availability Zone: Select us-west-2a from the drop-down menu
 * CIDR block: Enter 10.0.20.0/24
+4. Click Create subnet.
+The new subnet will be deployed into the selected VPC, and into the selected Availability Zone.
+
+Next, you will need to set up the route table.
+
+## Public Route table:
+
+5. In the left-hand navigation pane, click the Filter by VPC field and select the VPC-project VPC from the drop-down.
+6. In the left navigation pane, click Route Tables.
+7. Click Create route table.
+8. Configure the following route table settings:
+* Name: Enter *PublicRouteTable*
+* VPC: Select the VPC-project VPC from the drop-down menu
+9. Scroll to the bottom of the page and click Create route table.
+10. On the route details page, switch to the Routes tab and click Edit routes.
+11. Click Add route.
+12. Configure the following route settings:
+* Destination: Enter 0.0.0.0/0
+* Target: Select Internet Gateway, then demo-gw13. 
+13. Click Save changes.
+Up next, you will change the default route table of the public subnet to include the new route table.
+
+## Route table association:
+14. In the left-hand navigation pane, click Subnets.
+
+15. Select the Public-A subnet and click the Route table tab
+
+16. Click the Edit route table association button.
+17.  Select PublicRouteTable from the Route table ID drop-down menu and confirm the gw(demo-gw) we have created.
+18. Click Save.
+In this step, we created a public subnet in your VPC and associated it with a route table with access to the public internet.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
