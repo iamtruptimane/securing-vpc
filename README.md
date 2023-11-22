@@ -229,6 +229,109 @@ In this  step, we will create inbound and outbound rules for your private Networ
 
 In this step, we configured the inbound and outbound rules for the private Network Access Control List.
 
+## Step 9 : Launching an EC2 Instance on a Private Subnet
+In this Step we will launch an instance in a private subnet created earlier.
+1. In the AWS Management Console search bar, enter EC2, and click the EC2 result under Services.
+
+2. To see available instances, click Instances in the left-hand menu.
+3. Click Launch instances.
+4. In the Name and tags section, enter *private* under Name.
+5. In the Application and OS Images section, select the Amazon Linux 2 AMI (HVM) - Kernel 5.10 option under Quick Start.
+6. In the Instance Type section, you should not change any options. Simply make sure the default t2.micro is selected.
+7. In the Key pair section, select the keypair.
+8.  In the Network settings section, click Edit, and configure the following instance details:
+
+* VPC: Select the cloudacademy-labs VPC
+* Subnet: Select the Private-A  subnet
+* Auto-assign Public IP: Make sure this is disabled 
+* Firewall: Select Create security group
+* Security group name: Enter SG-Private
+* Description: Enter Security group for private subnet instances. Accept SSH inbound requests from Bastion host only.
+* Type: SSH
+* Protocol: TCP
+* Port: 22
+* Source type: Custom
+* Source: SG-bastion
+* Click Add security group rule
+* Type: HTTPS
+* Protocol: TCP
+* Port: 443
+* Source type: Custom
+* Source: 10.0.20.0/24 (Public VPC CIDR)
+
+_Note: If you also needed Windows access, you would add another rule: Type RDP; Protocol TCP; Port 3389; Source SG-bastion_
+
+9. Review the Summary section and click Launch instance.
+
+### Edit the outbound rule of SG-bastion:
+11. Select the private instance. In the Security tab, click the actionable security group link (for example, SG-Private).
+
+12. From the VPC Dashboard, click Security Groups. Make note of the Group ID of the SG-Private security group. 
+
+13. Select the SG-bastion security group, switch to the Outbound rules tab, and click Edit outbound rules. Now that you have a private security group, you can restrict Outbound rules to instances using SG-Private. Configure the following:
+
+* Type: SSH
+* Protocol: TCP
+* Port: 22
+* Destination: Select Custom and then enter the security Security group ID of SG-Private
+
+_Warning: Make sure to delete the existing SG rule, and add a new one._
+
+Click Save rules when ready.
+
+Next, you will SSH into your bastion host, and enable ssh-agent forwarding so you can SSH (jump) to the private instance in your private subnet. 
+
+## SSH into bastion host:
+### Linux/Mac instructions:
+a. Download the PEM SSH key file
+b. Make sure the permissions are correct on the PEM key file. From a terminal window in the directory you downloaded it to.
+```
+chmod 400 PEMfilename.pem
+``` 
+Since copying SSH private keys to a bastion instance is a security risk, you will enable SSH agent forwarding next. The ssh-add command can add private keys to the keychain application. Essentially, the private key will be used without having to copy it to the bastion host.
+
+c. Enter the following command to add private keys to the authentication agent:
+```
+ssh-add -k PEMfilename.pem
+```
+d. Verify the key was added:
+```
+ssh-add -L
+```
+e. SSH into your bastion host using the authentication agent you just added:
+```
+ssh -A ec2-user@BastionHostPublicIP
+```
+In this  Step you launched a basic instance that mimics a database server on a private subnet. It has a private IP address, which in and of itself makes it more secure. You learned how you can still SSH to the private instance by going through a bastion host. Further, rather than copying private SSH keys to the bastion host (a security risk), you updated your own authentication chain.
+
+## Step 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
