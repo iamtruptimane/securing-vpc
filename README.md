@@ -161,7 +161,47 @@ _Important:  This is a temporary target value. Later in this project, we will ad
 14. Select PrivateRouteTable from the Route table ID drop-down menu.
 15. Click Save.
 
-In this step, we created a private subnet and an associated route table. The route table currently has access to the public internet through the 0.0.0.0/0 route, but as mentioned before, you will update the target to a NAT device in a later step.  
+In this step, we created a private subnet and an associated route table. The route table currently has access to the public internet through the 0.0.0.0/0 route, but as mentioned before, you will update the target to a NAT device in a later step. 
+
+## Step 7: Creating a Network ACL for a Private Subnet
+A Network Access Control List (NACL) is an optional layer of security that acts as a firewall for controlling traffic in and out of a subnet.
+
+The VPC comes with a modifiable default network ACL and each subnet must be associated with a network ACL. If you do not explicitly associate a subnet with a network ACL, the subnet is automatically associated with the default network ACL that allows all inbound and outbound traffic.
+
+In this setp, we will create a Network Access Control List for your private subnet.
+1. In the left navigation pane, click Network ACLs under Security.
+2. Click Create Network ACL.
+3. Configure the following Network ACL settings.
+* Name: Enter Private-NACL 
+* VPC: Select VPC-project from the drop-down menu
+4. Click Create network ACL
+
+5. Select Private-NACL from the Network ACLs list and click the Subnet associations tab.
+6. Click Edit subnet associations.
+7. Select the check box for the Private-A subnet to associate it with the network ACL.
+8. Click Save changes.
+
+In this  step, we created a Network ACL and associated it with the private subnet in your VPC.
+
+## Step 8: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
