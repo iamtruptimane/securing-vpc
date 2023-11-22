@@ -58,7 +58,7 @@ As implied by the name, a public subnet will hold resources that require ingress
 2. Click Create subnet.
 3. Configure the following subnet details:
 * VPC ID: Select  VPC-project
-* Subnet name: Enter Public-A
+* Subnet name: Enter *Public-A*
 * Availability Zone: Select us-west-2a from the drop-down menu
 * CIDR block: Enter 10.0.20.0/24
 4. Click Create subnet.
@@ -79,7 +79,7 @@ Next, you will need to set up the route table.
 11. Click Add route.
 12. Configure the following route settings:
 * Destination: Enter 0.0.0.0/0
-* Target: Select Internet Gateway, then demo-gw13. 
+* Target: Select Internet Gateway, then demo-gw. 
 13. Click Save changes.
 Up next, you will change the default route table of the public subnet to include the new route table.
 
@@ -94,10 +94,11 @@ Up next, you will change the default route table of the public subnet to include
 In this step, we created a public subnet in your VPC and associated it with a route table with access to the public internet.
 
 ## Step 5: Creating a Bastion Host
+A bastion host is typically a host that sits inside your public subnet for the purposes of SSH (and/or RDP) access.Bastion hosts are sometimes referred to as jump servers, as you jump to one, then back out of it.Once you access a bastion host (for example, by using SSH to log into it), in order to access other instances you must either set up SSH port forwarding or copy your SSH key material to the bastion host.
 1. In the AWS Management Console search bar, enter EC2, and click the EC2 result under Services.
 2. To see available instances, click Instances in the left-hand menu.
 3. Click Launch instances.
-4. In the Name and tags section, enter bastion under Name.
+4. In the Name and tags section, enter *bastion* under Name.
 
 5. In the Application and OS Images section, select the Amazon Linux option under Quick Start.
 6. In the Instance Type section, you should not change any options. Simply make sure the default t2.micro is selected.
@@ -107,7 +108,7 @@ In this step, we created a public subnet in your VPC and associated it with a ro
 * Subnet: Select the Public-A | us-west-2a subnet
 * Auto-assign Public IP: Select Enable 
 * Firewall: Select Create security group
-* Security group name: Enter SG-bastion
+* Security group name: Enter *SG-bastion*
 * Description: Enter SG for bastion host. SSH access only
 * Type: SSH
 * Protocol: TCP
@@ -120,6 +121,81 @@ _Note: it isn't a best practice to set the source to any IP,you could set the so
 9. Review the Summary section and click Launch instance.
 
 In this step, we launched an EC2 instance with a public IP address in your public subnet that will be used as a bastion host.
+
+## Step 6: Creating a Private Subnet
+In this  step, we will create a private subnet. A common use case for private subnets is to configure resources for a back-end tier, such as database servers that should not be accessible from the internet.
+1. In the AWS Management Console search bar, enter VPC, and click the VPC result under Services.
+2. Select VPC-project in the Filter by VPC field.
+3. Click Subnets in the left navigation pane. The Subnets page lists previously created subnets.
+
+4. Click Create Subnet and specify the following details: 
+* VPC ID: Select the VPC-project VPC from the drop-down menu
+* Subnet name: Enter *Private-A*
+* Availability Zone: Select us-west-2a 
+* CIDR block: Enter 10.0.10.0/24 as the CIDR block of your subnet
+5. Click Create subnet.
+
+The created subnet is automatically attached to the default VPC Route table and the default Network ACL. 
+
+_If a subnet does not have a route to the Internet (0.0.0.0/0) through a gateway, the subnet is known as a private subnet_.
+
+Next, we will create a custom private route table.
+
+## Private route table:
+6. In the navigation pane, click Route Tables, then Create route table to open the dialog box.
+7. Click Create route table and configure the following:
+* Name: Enter *PrivateRouteTable*
+* VPC: Select VPC-project
+8. Click Create route table.
+9. In the PrivateRouteTable details page, in the Routes tab, click Edit routes.
+10. Click Add route and configure the following route settings:
+* Destination: Enter 0.0.0.0/0
+* Target: Select Internet Gateway, then demo-gw
+
+_Important:  This is a temporary target value. Later in this project, we will add a NAT device (gateway or instance) and update the Target for the PrivateRouteTable to the NAT device_.
+
+11. Click Save changes.
+12. Click Subnets from the left navigation pane, then select the Private-A subnet.
+
+13. In the Route Table tab, and click Edit route table association.
+14. Select PrivateRouteTable from the Route table ID drop-down menu.
+15. Click Save.
+
+In this step, we created a private subnet and an associated route table. The route table currently has access to the public internet through the 0.0.0.0/0 route, but as mentioned before, you will update the target to a NAT device in a later step.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
