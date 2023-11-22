@@ -183,7 +183,63 @@ In this setp, we will create a Network Access Control List for your private subn
 
 In this  step, we created a Network ACL and associated it with the private subnet in your VPC.
 
-## Step 8: 
+## Step 8: Adding Rules to a Private Network ACL
+In this  step, we will create inbound and outbound rules for your private Network Access Control List (NACL).
+## Inbound rules:
+1. In the left navigation pane, click Network ACLs under SECURITY.
+2. Select Private-NACL from the list of Network ACLs.
+
+3. Click the Inbound rules tab below the table and click Edit inbound rules:
+
+4. Click Add new rule and configure the following:
+* Rule number: Enter 100
+* Type: Select SSH
+* Source: Enter 10.0.20.0/24
+* Allow / Deny: Select Allow from the drop-down menu
+5.  For the second rule, click Add new rule and configure the following:
+* Rule number: Enter 200
+* Type: Select Custom TCP Rule
+* Port Range: Enter 1024-65535
+* Source: Enter  0.0.0.0/0
+* Allow / Deny: Select Allow from the drop-down menu
+6. Click Save changes.
+
+## Outbound rules:
+7. With the Private-NACL still selected, switch to the Outbound rules tab and click Edit outbound rules.
+
+8. Click Add new rule and configure the following:
+* Rule number: Enter 100
+* Type: Select HTTP from the drop-down menu
+* Destination: Enter  0.0.0.0/0
+* Allow / Deny: Select Allow from the drop-down menu  
+9. For the second outbound rule, click Add new rule and configure the following:
+* Rule number: Enter 200
+* Type: Select HTTPS from the drop-down menu
+* Destination: Enter  0.0.0.0/0
+* Allow / Deny: Select Allow from the drop-down menu 
+10. For the third outbound rule, click Add new rule and configure the following:
+
+* Rule number: Enter 300
+* Type: Select Custom TCP from the drop-down menu
+* Port Range: Enter 32768-61000
+* Destination: Enter  10.0.20.0/24 (The CIDR block of your public subnet)
+* Allow / Deny: Select Allow from the drop-down menu 
+
+11. Click Save changes.
+
+In this step, we configured the inbound and outbound rules for the private Network Access Control List.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
