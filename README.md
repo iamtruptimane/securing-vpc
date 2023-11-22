@@ -93,6 +93,53 @@ Up next, you will change the default route table of the public subnet to include
 18. Click Save.
 In this step, we created a public subnet in your VPC and associated it with a route table with access to the public internet.
 
+## Step 5: Creating a Bastion Host
+1. In the AWS Management Console search bar, enter EC2, and click the EC2 result under Services.
+2. To see available instances, click Instances in the left-hand menu.
+3. Click Launch instances.
+4. In the Name and tags section, enter bastion under Name.
+
+5. In the Application and OS Images section, select the Amazon Linux option under Quick Start.
+6. In the Instance Type section, you should not change any options. Simply make sure the default t2.micro is selected.
+7. In the Key pair section, select the keypair.
+8.  In the Network settings section, click Edit, and configure the following instance details:
+* VPC: Select the VPC-project VPC
+* Subnet: Select the Public-A | us-west-2a subnet
+* Auto-assign Public IP: Select Enable 
+* Firewall: Select Create security group
+* Security group name: Enter SG-bastion
+* Description: Enter SG for bastion host. SSH access only
+* Type: SSH
+* Protocol: TCP
+* Port: 22
+* Source type: Anywhere
+* Source: 0.0.0.0/0
+
+_Note: it isn't a best practice to set the source to any IP,you could set the source field to My IP in the drop-down menu to only allow your IP for improved security_.
+
+9. Review the Summary section and click Launch instance.
+
+In this step, we launched an EC2 instance with a public IP address in your public subnet that will be used as a bastion host.
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
